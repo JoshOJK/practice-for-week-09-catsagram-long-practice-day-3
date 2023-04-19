@@ -14,6 +14,8 @@ export const createScoreContainer = () => {
 
     const container = document.querySelector(".container");
     container.appendChild(scoreContainer);
+
+    loadScore()
 };
 
 const createScoreDisplay = () => {
@@ -65,7 +67,7 @@ const vote = e => {
     } else {
         newScore = parseInt(newScore) - 1;
     }
-    
+
     // update score
     updateScore(newScore);
 };
@@ -78,4 +80,17 @@ export const resetScore = () => {
 const updateScore = (newScore) => {
     const score = document.querySelector('.score');
     score.innerText = newScore;
+
+    storeScore(newScore)
 };
+
+const storeScore = (score) => {
+    window.localStorage.setItem('score', score)
+}
+
+const loadScore = () => {
+    let score = localStorage.getItem("score")
+    if(score) {
+        updateScore(score)
+    }
+}

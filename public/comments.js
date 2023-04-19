@@ -6,6 +6,8 @@ export const createCommentSection = () => {
 
     container.appendChild(commentForm);
     container.appendChild(commentsList);
+
+    loadComments();
 };
 
 const createCommentsList = () => {
@@ -78,6 +80,8 @@ const submitComment = e => {
     const commentText = commentInput.value;
     createComment(commentText);
     commentInput.value = "";
+
+    storeComment(commentText)
 }
 
 const createComment = (commentText) => {
@@ -103,6 +107,24 @@ const createComment = (commentText) => {
     comments.appendChild(newCommentContainer);
 };
 
+
+function storeComment(comment) {
+    const storedCommentArray = JSON.parse(localStorage.getItem('comments'))
+    storedCommentArray.push(comment);
+    localStorage.setItem("comments", JSON.stringify(storedCommentArray))
+
+}
+
+function loadComments() {
+    const commentArray = localStorage.getItem("comments")
+    if(commentArray) {
+        JSON.parse(commentArray).forEach((comment) => {
+            createComment(comment);
+        })
+    }else {
+        localStorage.setItem("comments", JSON.stringify([]))
+    }
+}
 
 export const resetComments = () => {
     const comments = document.querySelector(".comments");
